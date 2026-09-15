@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
-import { BG_URL } from "../utils/constant";
+import { BG_URL, USER_PROFILE_URL } from "../utils/constant";
 import { checkValidation } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
@@ -39,7 +39,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "https://avatars.githubusercontent.com/u/96379743?v=4",
+            photoURL: USER_PROFILE_URL,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
