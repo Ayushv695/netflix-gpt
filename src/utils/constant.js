@@ -3,3 +3,9 @@ export const LOGO_URL =
 
 export const BG_URL =
   "https://assets.nflxext.com/ffe/siteui/vlv3/fd8ae3c6-340b-490b-9d3c-f8a3df895c45/web/IN-en-20260907-TRIFECTA-perspective_e8f74db6-0559-495d-84fb-a75bca089b27_large.jpg";
+
+export const USER_ICON =
+  "https://i.pinimg.com/564x/d7/19/6a/d7196adc7c4f353d52235c5e6ed12e65.jpg";
+
+export const USER_PROFILE_URL =
+  "https://avatars.githubusercontent.com/u/96379743?v=4";

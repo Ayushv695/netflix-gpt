@@ -1,9 +1,95 @@
-import React, { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
-import { BG_URL } from "../utils/constant";
+import { BG_URL, USER_PROFILE_URL } from "../utils/constant";
+import { checkValidation } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+
+  const email = useRef(null);
+  const password = useRef(null);
+  const name = useRef(null);
+  const dispatch = useDispatch();
+
+  const handleFormSubmit = () => {
+    const message = checkValidation(
+      email.current.value,
+      password.current.value,
+    );
+    setErrorMessage(message);
+
+    if (message) return;
+    // console.log(auth);
+    if (!isSignInForm) {
+      // sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/96379743?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                }),
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(error);
+              setErrorMessage(errorCode + "-" + errorMessage);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error);
+          setErrorMessage(errorCode + "-" + errorMessage);
+          // ..
+        });
+    } else {
+      // sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error);
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
+  };
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -16,14 +102,19 @@ const Login = () => {
         <img src={BG_URL} alt="" />
       </div>
       <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
         action=""
-        className="w-4/12 p-12 bg-black absolute my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+        className="w-3/12 p-12 bg-black absolute my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
       >
         <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
+
         {!isSignInForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Full Name"
             name="name"
@@ -32,18 +123,27 @@ const Login = () => {
         )}
 
         <input
+          ref={email}
           type="text"
           placeholder="Email Address"
           name="email"
           className="p-2 my-4 w-full bg-gray-700"
         />
+
         <input
+          ref={password}
           type="password"
           placeholder="Password"
           name="password"
           className="p-2 my-4 w-full bg-gray-700"
         />
-        <button className="p-4 my-6 w-full bg-red-700 rounded-lg">
+
+        <p className="font-bold text-red-700 text-xl">{errorMessage}</p>
+
+        <button
+          className="p-4 my-6 w-full bg-red-700 rounded-lg"
+          onClick={handleFormSubmit}
+        >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
