@@ -9,3 +9,15 @@ export const USER_ICON =
 
 export const USER_PROFILE_URL =
   "https://avatars.githubusercontent.com/u/96379743?v=4";
+
+export const API_OPTIONS = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4M2NmMGI2ZWVhZjFhYWVhMGMwOTM4ODk3NGIzM2E4MiIsIm5iZiI6MTc4OTQ2OTQ5MS4zMzIsInN1YiI6IjZhYTkyMzMzYmM2ZGMzMjhjZDQ1MjJhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.85bJ5EWjESHHGetp74ObhkzUmgyGYsH4buXOYhp54_w",
+  },
+};
+
+export const NOW_PLAYING_MOVIES =
+  "https://api.themoviedb.org/3/movie/now_playing?page=1";
