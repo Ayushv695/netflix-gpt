@@ -8,7 +8,7 @@ const Browse = () => {
   useNowPlayingMovies();
   usePopularMovies();
   return (
-    <div>
+    <div className="w-[100%]">
       <Header></Header>
       <MainContainer></MainContainer>
       <SecondaryContainer></SecondaryContainer>
