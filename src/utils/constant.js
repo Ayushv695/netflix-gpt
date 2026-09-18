@@ -26,3 +26,9 @@ export const POPULAR_MOVIES =
   "https://api.themoviedb.org/3/movie/popular?page=1";
 
 export const IMAGE_CDN_URL = "https://image.tmdb.org/t/p/w500/";
+
+export const SUPPORTED_LANGUAGES = [
+  { identifier: "en", name: "English" },
+  { identifier: "hi", name: "Hindi" },
+  { identifier: "sp", name: "Spanish" },
+];
